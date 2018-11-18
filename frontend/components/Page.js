@@ -3,7 +3,6 @@ import styled, { ThemeProvider, injectGlobal } from "styled-components";
 
 import Header from "../components/Header";
 import Meta from "../components/Meta";
-import { POINT_CONVERSION_COMPRESSED } from "constants";
 
 const theme = {
   maroon: "#8B1F41",
