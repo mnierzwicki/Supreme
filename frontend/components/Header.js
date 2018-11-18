@@ -20,7 +20,7 @@ const Logo = styled.h1`
   margin-left: 2rem;
   position: relative;
   z-index: 2;
-  transform: skew(-7deg);
+  transform: skew(-14deg);
   a {
     padding: 0.5rem 1rem;
     background: ${props => props.theme.orange};
@@ -50,6 +50,8 @@ const StyledHeader = styled.header`
     display: grid;
     grid-template-columns: 1fr auto;
     border-bottom: 1px solid ${props => props.theme.lightGrey};
+    margin-left: 4rem;
+    margin-right: 4rem;
   }
 `;
 
