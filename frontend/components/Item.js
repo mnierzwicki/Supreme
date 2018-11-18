@@ -16,7 +16,7 @@ class Item extends React.Component {
     const item = this.props.item;
     return (
       <ItemStyles>
-        {item.image && <img src={image.image} alt={image.title} />}
+        {item.image && <img src={item.image} alt={item.title} />}
         <Title>
           <Link
             href={{

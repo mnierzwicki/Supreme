@@ -30,6 +30,24 @@ class CreateItem extends React.Component {
     this.setState({ [name]: val });
   };
 
+  uploadFile = async event => {
+    const files = event.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "Supreme-Shop");
+
+    const resp = await fetch("https://api.cloudinary.com/v1_1/dayzgs2nn/image/upload/", {
+      method: "POST",
+      body: data
+    });
+
+    const file = await resp.json();
+    this.setState({
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url
+    });
+  };
+
   render() {
     return (
       <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
@@ -64,6 +82,11 @@ class CreateItem extends React.Component {
               <label htmlFor="description">
                 Description
                 <textarea type="text" id="description" name="description" placeholder="Enter a description" value={this.state.description} onChange={this.handleChange} required />
+              </label>
+
+              <label htmlFor="file">
+                Image
+                <input type="file" id="file" name="file" placeholder="Upload an image" onChange={this.uploadFile} required />
               </label>
 
               <button type="submit">Submit</button>
