@@ -11,11 +11,20 @@ const TOKEN_AGE_ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
 const Mutations = {
   async createItem(parent, args, ctx, info) {
     // TODO: Check if they are logged in
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to create items");
+    }
 
     const item = await ctx.db.mutation.createItem(
       {
         data: {
-          ...args
+          ...args,
+          // This is how relationships are created between Item and User
+          user: {
+            connect: {
+              id: ctx.request.userId
+            }
+          }
         }
       },
       info
