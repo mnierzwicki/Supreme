@@ -16,6 +16,10 @@ server.express.use((req, res, next) => {
   if (token) {
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
 
+    if (userId === undefined) {
+      console.log("Token failed jwt.verify(), BAD COOKIE!");
+    }
+
     // add userId to all requests
     req.userId = userId;
   }
