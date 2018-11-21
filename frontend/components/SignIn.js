@@ -1,8 +1,10 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+
 import Form from "./styles/Form";
 import Error from "./ErrorMessage";
+import Success from "./SuccessMessage";
 import { CURRENT_USER_QUERY } from "./User";
 
 const SIGNIN_MUTATION = gql`
@@ -28,7 +30,7 @@ class SignIn extends React.Component {
   render() {
     return (
       <Mutation mutation={SIGNIN_MUTATION} variables={this.state} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
-        {(signin, { error, loading }) => (
+        {(signin, { error, loading, called }) => (
           <Form
             method="post"
             onSubmit={async event => {
@@ -40,6 +42,7 @@ class SignIn extends React.Component {
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Login</h2>
               <Error error={error} />
+              {!error && !loading && called && <Success message={"Logged in!"} />}
               <label htmlFor="email">
                 Email
                 <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} />
