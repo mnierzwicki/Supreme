@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
 
+const { transport, generateEmail } = require("../mail");
+
 const TOKEN_AGE_ONE_HOUR = 1000 * 60 * 60;
 const TOKEN_AGE_ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
 
@@ -123,8 +125,23 @@ const Mutations = {
       data: { resetToken: resetToken, resetTokenExpiry: resetTokenExpiry }
     });
 
-    return { message: "Reset!" };
-    // TODO: email the user the token
+    // email the user the reset token
+    await transport.sendMail(
+      {
+        from: "supreme@reset.com",
+        to: user.email,
+        subject: "Supreme Store Password Reset",
+        html: generateEmail(`Reset your account password: \n\n
+          <a href='${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}'>Click here to reset</a>`)
+      },
+      (err, info) => {
+        if (err) {
+          throw new Error(`Failed to send password reset email to ${user.email}`);
+        }
+      }
+    );
+
+    return { message: "Password reset email sent successfully" };
   },
   async resetPassword(parent, args, ctx, info) {
     // check if passwords match
