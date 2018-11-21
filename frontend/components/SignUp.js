@@ -1,9 +1,11 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+
 import Form from "./styles/Form";
 import Error from "./ErrorMessage";
-import SignUpStatus from "./SignUpStatus";
+import Success from "./SuccessMessage";
+import { CURRENT_USER_QUERY } from "./User";
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION($email: String!, $name: String!, $password: String!) {
@@ -19,8 +21,7 @@ class SignUp extends React.Component {
   state = {
     name: "",
     password: "",
-    email: "",
-    signUpSuccess: false
+    email: ""
   };
 
   saveToState = event => {
@@ -29,27 +30,27 @@ class SignUp extends React.Component {
 
   render() {
     return (
-      <Mutation mutation={SIGNUP_MUTATION} variables={this.state}>
-        {(signup, { error, loading }) => {
+      <Mutation mutation={SIGNUP_MUTATION} variables={this.state} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+        {(signup, { error, loading, called }) => {
           return (
             <Form
               method="post"
               onSubmit={async event => {
                 event.preventDefault();
                 try {
-                  const rsp = await signup();
-                  this.setState({ name: "", email: "", password: "", signUpSuccess: true });
+                  await signup();
+                  this.setState({ name: "", email: "", password: "" });
                 } catch (error) {
-                  this.setState({ signUpSuccess: false });
                   // Prevent GraphQL from displaying error message to console.log
                   // Instead, display a custom error message in the UI later.
                 }
               }}
             >
               <fieldset disabled={loading} aria-busy={loading}>
-                <h2>Sign Up for an Account</h2>
-                <SignUpStatus error={error} success={this.state.signUpSuccess} />
-                {/* <Error error={error} /> */}
+                <h2>Sign Up</h2>
+                <Error error={error} />
+                {!error && !loading && called && <Success message={"Sign up successful!"} />}
+
                 <label htmlFor="email">
                   Email
                   <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} />
