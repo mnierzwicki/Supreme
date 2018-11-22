@@ -4,6 +4,7 @@ const { randomBytes } = require("crypto");
 const { promisify } = require("util");
 
 const { transport, generateEmail } = require("../mail");
+const { hasPermission } = require("../utils");
 
 const TOKEN_AGE_ONE_HOUR = 1000 * 60 * 60;
 const TOKEN_AGE_ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -48,14 +49,26 @@ const Mutations = {
     );
   },
   async deleteItem(parent, args, ctx, info) {
-    const where = { id: args.id };
     // find the item
-    const item = await ctx.db.query.item({ where }, `{ id title }`);
+    const item = await ctx.db.query.item({ where: { id: args.id } }, `{ id title user { id } }`);
+    if (!item) {
+      throw new Error("Item doesn't exist");
+    }
 
-    // TODO check if they own the item, or have the permissions
+    // check if they own the item, or have the permissions to delete it
+    if (!ctx.request.userId) {
+      throw new Error("Must be logged in to delete items");
+    }
 
-    // delete it
-    return ctx.db.mutation.deleteItem({ where }, info);
+    const userOwnsItem = item.user.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission => ["ADMIN", "ITEMDELETE"].includes(permission));
+
+    if (!userOwnsItem && !hasPermissions) {
+      throw new Error("You don't have permission to do that");
+    }
+
+    // all checks passed, delete the item
+    return ctx.db.mutation.deleteItem({ where: { id: args.id } }, info);
   },
   async signup(parent, args, ctx, info) {
     // normalize email address
