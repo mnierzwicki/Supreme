@@ -201,6 +201,34 @@ const Mutations = {
     });
 
     return updatedUser;
+  },
+  async updatePermissions(parent, args, ctx, info) {
+    // check if user is logged in
+    if (!ctx.request.userId) {
+      throw new Error("Must be logged in to change permissions");
+    }
+
+    // query current user
+    const user = await ctx.db.query.user(
+      {
+        where: {
+          id: ctx.request.userId
+        }
+      },
+      info
+    );
+
+    // check if user has permission to make the change
+    hasPermission(user, ["ADMIN", "PERMISSIONUPDATE"]);
+
+    // update the permissions
+    return ctx.db.mutation.updateUser(
+      {
+        where: { id: args.userId },
+        data: { permissions: { set: args.permissions } }
+      },
+      info
+    );
   }
 };
 
