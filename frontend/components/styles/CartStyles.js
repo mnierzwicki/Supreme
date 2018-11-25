@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const CartStyles = styled.div`
   padding: 20px;
@@ -24,7 +24,7 @@ const CartStyles = styled.div`
     padding-bottom: 2rem;
   }
   footer {
-    border-top: 10px double ${props => props.theme.black};
+    border-top: 5px solid ${props => props.theme.black};
     margin-top: 2rem;
     padding-top: 2rem;
     display: grid;

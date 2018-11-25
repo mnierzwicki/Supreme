@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const SickButton = styled.button`
-  background: red;
+  background: ${props => props.theme.orange};
   color: white;
   font-weight: 500;
   border: 0;
@@ -9,7 +9,6 @@ const SickButton = styled.button`
   text-transform: uppercase;
   font-size: 2rem;
   padding: 0.8rem 1.5rem;
-  transform: skew(-2deg);
   display: inline-block;
   transition: all 0.5s;
   &[disabled] {
