@@ -67,7 +67,14 @@ const Mutations = {
       throw new Error("You don't have permission to do that");
     }
 
-    // all checks passed, delete the item
+    // Delete all cart items which contain the item we're about to delete
+    await ctx.db.mutation.deleteManyCartItems({
+      where: {
+        item: { id: args.id }
+      }
+    });
+
+    // delete the actual item
     return ctx.db.mutation.deleteItem({ where: { id: args.id } }, info);
   },
   async signup(parent, args, ctx, info) {
