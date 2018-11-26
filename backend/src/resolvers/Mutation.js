@@ -271,6 +271,40 @@ const Mutations = {
       },
       info
     );
+  },
+  async removeFromCart(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("Must be logged in to remove cart items");
+    }
+
+    // 1. Find cart item
+    const cartItem = await ctx.db.query.cartItem(
+      {
+        where: {
+          id: args.id
+        }
+      },
+      `{ id, user { id }}`
+    );
+
+    if (!cartItem) {
+      throw new Error("No cart item found");
+    }
+
+    // 2. Ensure user owns cart item
+    if (cartItem.user.id !== ctx.request.userId) {
+      throw new Error("Calling user doesn't have item in cart");
+    }
+
+    // 3. Delete the cart item
+    return ctx.db.mutation.deleteCartItem(
+      {
+        where: {
+          id: cartItem.id
+        }
+      },
+      info
+    );
   }
 };
 
