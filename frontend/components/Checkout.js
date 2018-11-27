@@ -2,6 +2,7 @@ import React from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { Mutation } from "react-apollo";
 import Router from "next/router";
+import NProgress from "nprogress";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { withAlert } from "react-alert";
@@ -30,6 +31,8 @@ function totalItems(cart) {
 
 class Checkout extends React.Component {
   onToken = async (resp, createOrder) => {
+    NProgress.start();
+
     // manually call mutation once we have the stripe token
     const order = await createOrder({
       variables: {
@@ -40,6 +43,11 @@ class Checkout extends React.Component {
     });
 
     this.props.alert.success("Order processed!");
+
+    Router.push({
+      pathname: "/order",
+      query: { id: order.data.createOrder.id }
+    });
   };
 
   render() {

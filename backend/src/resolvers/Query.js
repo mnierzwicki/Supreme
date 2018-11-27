@@ -28,6 +28,30 @@ const Query = {
     // If they do have permissions, query all the users
     const empty_where = {};
     return ctx.db.query.users(empty_where, info);
+  },
+  order: async function(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("Must be logged in");
+    }
+
+    // query the requested order
+    const order = await ctx.db.query.order(
+      {
+        where: {
+          id: args.id
+        }
+      },
+      info
+    );
+
+    // verify user either owns order or is ADMIN
+    const ownsOrder = order.user.id === ctx.request.userId;
+    const hasPermission = ctx.request.user.permissions.includes("ADMIN");
+    if (!ownsOrder && !hasPermission) {
+      throw new Error("You don't have permission to see this order");
+    }
+
+    return order;
   }
 };
 
