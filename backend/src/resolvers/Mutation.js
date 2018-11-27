@@ -13,7 +13,7 @@ const Mutations = {
   async createItem(parent, args, ctx, info) {
     // TODO: Check if they are logged in
     if (!ctx.request.userId) {
-      throw new Error("You must be logged in to create items");
+      throw new Error("Login to create items");
     }
 
     const item = await ctx.db.mutation.createItem(
@@ -57,14 +57,14 @@ const Mutations = {
 
     // check if they own the item, or have the permissions to delete it
     if (!ctx.request.userId) {
-      throw new Error("Must be logged in to delete items");
+      throw new Error("Login to delete items");
     }
 
     const userOwnsItem = item.user.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission => ["ADMIN", "ITEMDELETE"].includes(permission));
 
     if (!userOwnsItem && !hasPermissions) {
-      throw new Error("You don't have permission to do that");
+      throw new Error("You don't own this item");
     }
 
     // Delete all cart items which contain the item we're about to delete
@@ -170,12 +170,12 @@ const Mutations = {
       }
     );
 
-    return { message: "Password reset email sent successfully" };
+    return { message: "Reset email sent" };
   },
   async resetPassword(parent, args, ctx, info) {
     // check if passwords match
     if (args.password !== args.confirmPassword) {
-      throw new Error("Provided passwords do not match");
+      throw new Error("Provided passwords don't match");
     }
 
     // check if user has unexpired reset token
@@ -212,7 +212,7 @@ const Mutations = {
   async updatePermissions(parent, args, ctx, info) {
     // check if user is logged in
     if (!ctx.request.userId) {
-      throw new Error("Must be logged in to change permissions");
+      throw new Error("Login to change permissions");
     }
 
     // query current user

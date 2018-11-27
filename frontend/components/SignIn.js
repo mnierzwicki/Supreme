@@ -41,8 +41,10 @@ class SignIn extends React.Component {
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Login</h2>
-              <Error error={error} />
+
+              {error && <Error error={error} />}
               {!error && !loading && called && <Success message={"Logged in!"} />}
+
               <label htmlFor="email">
                 Email
                 <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} />

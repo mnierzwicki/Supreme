@@ -48,7 +48,8 @@ class SignUp extends React.Component {
             >
               <fieldset disabled={loading} aria-busy={loading}>
                 <h2>Sign Up</h2>
-                <Error error={error} />
+
+                {error && <Error error={error} />}
                 {!error && !loading && called && <Success message={"Sign up successful!"} />}
 
                 <label htmlFor="email">

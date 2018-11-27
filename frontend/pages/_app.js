@@ -1,5 +1,7 @@
 import App, { Container } from "next/app";
 import { ApolloProvider } from "react-apollo";
+import { Provider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
 
 import Page from "../components/Page";
 import withData from "../lib/withData";
@@ -15,15 +17,23 @@ class StoreApp extends App {
     return { pageProps };
   }
 
+  options = {
+    timeout: 5000,
+    position: "top center",
+    transition: "scale"
+  };
+
   render() {
     const { Component, apollo, pageProps } = this.props;
 
     return (
       <Container>
         <ApolloProvider client={apollo}>
-          <Page>
-            <Component {...pageProps} />
-          </Page>
+          <Provider template={AlertTemplate} {...this.options}>
+            <Page>
+              <Component {...pageProps} />
+            </Page>
+          </Provider>
         </ApolloProvider>
       </Container>
     );

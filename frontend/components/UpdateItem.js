@@ -59,7 +59,8 @@ class UpdateItem extends React.Component {
             <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>
               {(updateItem, { loading, error }) => (
                 <Form onSubmit={e => this.updateItem(e, updateItem)}>
-                  <Error error={error} />
+                  {error && <Error error={error} />}
+
                   <fieldset disabled={loading} aria-busy={loading}>
                     <label htmlFor="title">
                       Title

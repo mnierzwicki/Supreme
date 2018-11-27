@@ -34,7 +34,7 @@ const Permissions = props => (
   <Query query={ALL_USERS_QUERY}>
     {({ data, error, loading }) => (
       <div>
-        <Error error={error} />
+        {error && <Error error={error} />}
         <div>
           <h2>Manage Permissions</h2>
           <Table>
@@ -93,7 +93,8 @@ class UserPermissions extends React.Component {
       <Mutation mutation={UPDATE_PERMISSIONS_MUTATION} variables={{ permissions: this.state.permissions, userId: user.id }}>
         {(updatePermissions, { error, loading }) => (
           <>
-            <Error error={error} />
+            {error && <Error error={error} />}
+
             <tr>
               <td>{user.name}</td>
               <td>{user.email}</td>

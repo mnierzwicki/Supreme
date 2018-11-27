@@ -52,7 +52,7 @@ class CreateItem extends React.Component {
   render() {
     return (
       <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state} refetchQueries={[{ query: ALL_ITEMS_QUERY }, { query: PAGINATION_QUERY }]}>
-        {(createItem, payload) => (
+        {(createItem, { error, loading, called }) => (
           <Form
             onSubmit={async e => {
               // Stop from from submitting
@@ -68,8 +68,9 @@ class CreateItem extends React.Component {
               });
             }}
           >
-            <Error error={payload.error} />
-            <fieldset disabled={payload.loading} aria-busy={payload.loading}>
+            {error && <Error error={error} />}
+
+            <fieldset disabled={loading} aria-busy={loading}>
               <label htmlFor="title">
                 Title
                 <input type="text" id="title" name="title" placeholder="Title" value={this.state.title} onChange={this.handleChange} required />

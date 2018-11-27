@@ -1,24 +1,14 @@
-import styled from "styled-components";
 import React from "react";
+import { withAlert } from "react-alert";
 
-const SuccessStyles = styled.div`
-  padding: 2rem;
-  background: white;
-  margin: 2rem 0;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-left: 5px solid green;
-  p {
-    margin: 0;
-    font-weight: 100;
+class SuccessMessage extends React.Component {
+  componentDidMount() {
+    this.props.alert.success(this.props.message);
   }
-`;
 
-const SuccessMessage = ({ message }) => {
-  return (
-    <SuccessStyles>
-      <p>{message}</p>
-    </SuccessStyles>
-  );
-};
+  render() {
+    return null;
+  }
+}
 
-export default SuccessMessage;
+export default withAlert(SuccessMessage);

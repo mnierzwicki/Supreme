@@ -1,10 +1,12 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { withAlert } from "react-alert";
 
 import { ALL_ITEMS_QUERY } from "./Items";
 import { CURRENT_USER_QUERY } from "./User";
 import { PAGINATION_QUERY } from "./Pagination";
+import formatError from "../lib/formatError";
 
 const DELETE_ITEM_MUTATION = gql`
   mutation DELETE_ITEM_MUTATION($id: ID!) {
@@ -41,7 +43,7 @@ class DeleteItem extends React.Component {
             onClick={() => {
               if (confirm("Are you sure you want to delete item?")) {
                 deleteItem().catch(err => {
-                  alert(err.message);
+                  this.props.alert.error(formatError(err));
                 });
               }
             }}
@@ -54,4 +56,4 @@ class DeleteItem extends React.Component {
   }
 }
 
-export default DeleteItem;
+export default withAlert(DeleteItem);

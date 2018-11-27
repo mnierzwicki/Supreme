@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
 
 import formatMoney from "../lib/formatMoney";
 import RemoveFromCart from "./RemoveFromCart";

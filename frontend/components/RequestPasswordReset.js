@@ -37,8 +37,10 @@ class RequestPasswordReset extends React.Component {
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Reset Password</h2>
-              <Error error={error} />
-              {!error && !loading && called && <Success message={"Reset link sent to email"} />}
+
+              {error && <Error error={error} />}
+              {!error && !loading && called && <Success message="Reset link sent to email" />}
+
               <label htmlFor="email">
                 Email
                 <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} />

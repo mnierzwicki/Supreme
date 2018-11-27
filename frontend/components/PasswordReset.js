@@ -54,7 +54,8 @@ class PasswordReset extends React.Component {
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Reset password</h2>
-              <Error error={error} />
+
+              {error && <Error error={error} />}
               {!error && !loading && called && <Success message={"Successfully changed password"} />}
 
               <label htmlFor="password">
