@@ -9,8 +9,8 @@ const SickButton = styled.button`
   text-transform: uppercase;
   font-size: 2rem;
   padding: 0.8rem 1.5rem;
-  display: inline-block;
   transition: all 0.5s;
+  float: right;
   &[disabled] {
     opacity: 0.5;
   }

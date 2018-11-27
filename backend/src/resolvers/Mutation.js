@@ -5,6 +5,7 @@ const { promisify } = require("util");
 
 const { transport, generateEmail } = require("../mail");
 const { hasPermission } = require("../utils");
+const stripe = require("../stripe");
 
 const TOKEN_AGE_ONE_HOUR = 1000 * 60 * 60;
 const TOKEN_AGE_ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -312,6 +313,84 @@ const Mutations = {
       },
       info
     );
+  },
+  async createOrder(parent, args, ctx, info) {
+    // Ensure user is signed in
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error("Sign in to checkout");
+    }
+
+    const user = await ctx.db.query.user(
+      {
+        where: {
+          id: userId
+        }
+      },
+      `{
+          id
+          name
+          email
+          cart {
+            id
+            quantity
+            item {
+              title
+              price
+              id
+              description
+              image
+              largeImage
+            }
+          }
+        }`
+    );
+
+    // Recalculate the cart total price server-side
+    const amount = user.cart.reduce((tally, cartItem) => tally + cartItem.item.price * cartItem.quantity, 0);
+
+    // Create Stripe charge (turn token into $$$)
+    const charge = await stripe.charges.create({
+      amount: amount,
+      currency: "USD",
+      source: args.token
+    });
+
+    // Convert CartItems to OrderItems
+    const orderItems = user.cart.map(cartItem => {
+      const orderItem = {
+        ...cartItem.item,
+        quantity: cartItem.quantity,
+        user: { connect: { id: userId } }
+      };
+      delete orderItem.id;
+      return orderItem;
+    });
+
+    // Create the Order
+    const order = await ctx.db.mutation
+      .createOrder({
+        data: {
+          total: charge.amount,
+          charge: charge.id,
+          items: { create: orderItems }, // instruct prisma to create all the OrderItems in the db for us
+          user: { connect: { id: userId } }
+        }
+      })
+      .catch(err => {
+        throw new Error("Failed to create order");
+      });
+
+    // Clear users cart, delete CartItems
+    const currentCartIds = user.cart.map(cartItem => cartItem.id);
+    await ctx.db.mutation.deleteManyCartItems({
+      where: {
+        id_in: currentCartIds
+      }
+    });
+
+    // Return the Order to the client
+    return order;
   }
 };
 
