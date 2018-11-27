@@ -7,12 +7,7 @@ const RequireSignIn = props => (
     {(payload, loading) => {
       if (loading) return <p>Loading...</p>;
       if (!payload.data.me) {
-        return (
-          <>
-            <p>Sign in to sell items</p>
-            <SignIn />
-          </>
-        );
+        return <SignIn />;
       }
       return props.children;
     }}

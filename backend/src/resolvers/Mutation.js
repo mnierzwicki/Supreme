@@ -112,7 +112,7 @@ const Mutations = {
     // Check if user with corresponding email exists
     const user = await ctx.db.query.user({ where: { email: args.email } });
     if (!user) {
-      throw new Error(`No user found with email '${args.email}'`);
+      throw new Error(`Invalid user: '${args.email}'`);
     }
 
     // Check that password is correct

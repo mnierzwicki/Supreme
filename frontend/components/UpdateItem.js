@@ -52,7 +52,7 @@ class UpdateItem extends React.Component {
   render() {
     return (
       <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
-        {({ data, loading }) => {
+        {({ data, loading, error }) => {
           if (loading) return <p>Loading...</p>;
           if (!data.item) return <p>No Item Found for ID: {this.props.id}</p>;
           return (
