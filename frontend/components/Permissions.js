@@ -31,32 +31,37 @@ const UPDATE_PERMISSIONS_MUTATION = gql`
 const possiblePermissions = ["ADMIN", "USER", "ITEMCREATE", "ITEMUPDATE", "ITEMDELETE", "PERMISSIONUPDATE"];
 
 const Permissions = props => (
-  <Query query={ALL_USERS_QUERY}>
-    {({ data, error, loading }) => (
-      <div>
-        {error && <Error error={error} />}
+  <Query query={ALL_USERS_QUERY} fetchPolicy="network-only">
+    {({ data, error, loading }) => {
+      if (loading) return null;
+      return (
         <div>
-          <h2>Manage Permissions</h2>
-          <Table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                {possiblePermissions.map(permission => (
-                  <th key={permission}>{permission}</th>
-                ))}
-                <th>Update</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.users.map(user => (
-                <UserPermissions key={`${user.id}-permissions`} user={user} />
-              ))}
-            </tbody>
-          </Table>
+          {error && <h2>You have insufficient permissions to view this page!</h2>}
+          {!error && !loading && data && (
+            <div>
+              <h2>Manage Permissions</h2>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    {possiblePermissions.map(permission => (
+                      <th key={permission}>{permission}</th>
+                    ))}
+                    <th>Update</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.users.map(user => (
+                    <UserPermissions key={`${user.id}-permissions`} user={user} />
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          )}
         </div>
-      </div>
-    )}
+      );
+    }}
   </Query>
 );
 
