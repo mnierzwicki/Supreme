@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 
 import Form from "./styles/Form";
 import Error from "./ErrorMessage";
+import Success from "./SuccessMessage";
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -57,9 +58,10 @@ class UpdateItem extends React.Component {
           if (!data.item) return <p>No Item Found for ID: {this.props.id}</p>;
           return (
             <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>
-              {(updateItem, { loading, error }) => (
+              {(updateItem, { loading, error, called }) => (
                 <Form onSubmit={e => this.updateItem(e, updateItem)}>
                   {error && <Error error={error} />}
+                  {!error && !loading && called && <Success message={"Item updated"} />}
 
                   <fieldset disabled={loading} aria-busy={loading}>
                     <label htmlFor="title">
