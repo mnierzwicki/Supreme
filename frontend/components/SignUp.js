@@ -1,9 +1,10 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { withAlert } from "react-alert";
 
+import formatError from "../lib/formatError";
 import Form from "./styles/Form";
-import Error from "./ErrorMessage";
 import Success from "./SuccessMessage";
 import { CURRENT_USER_QUERY } from "./User";
 
@@ -38,7 +39,9 @@ class SignUp extends React.Component {
               onSubmit={async event => {
                 event.preventDefault();
                 try {
-                  await signup();
+                  await signup().catch(err => {
+                    this.props.alert.error(formatError(err));
+                  });
                   this.setState({ name: "", email: "", password: "" });
                 } catch (error) {
                   // Prevent GraphQL from displaying error message to console.log
@@ -49,20 +52,19 @@ class SignUp extends React.Component {
               <fieldset disabled={loading} aria-busy={loading}>
                 <h2>Sign Up</h2>
 
-                {error && <Error error={error} />}
                 {!error && !loading && called && <Success message={"Sign up successful!"} />}
 
                 <label htmlFor="email">
                   Email
-                  <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} />
+                  <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} required />
                 </label>
                 <label htmlFor="name">
                   Name
-                  <input type="text" name="name" placeholder="name" value={this.state.name} onChange={this.saveToState} />
+                  <input type="text" name="name" placeholder="name" value={this.state.name} onChange={this.saveToState} required />
                 </label>
                 <label htmlFor="password">
                   Password
-                  <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.saveToState} />
+                  <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.saveToState} required />
                 </label>
                 <button type="submit">Sign Up</button>
               </fieldset>
@@ -74,4 +76,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+export default withAlert(SignUp);

@@ -32,9 +32,7 @@ const OrderUl = styled.ul`
 `;
 
 const OrderHeader = styled.h2`
-  h2 {
-    text-align: center;
-  }
+  text-align: center;
 `;
 
 class OrderList extends React.Component {
@@ -48,9 +46,7 @@ class OrderList extends React.Component {
             const orders = data.orders;
             return (
               <div>
-                <OrderHeader>
-                  <h2>You have {orders.length} orders</h2>
-                </OrderHeader>
+                <OrderHeader>You have {orders.length} orders</OrderHeader>
                 <OrderUl>
                   {orders.map(order => (
                     <OrderItemStyles key={order.id}>
@@ -86,3 +82,4 @@ class OrderList extends React.Component {
 }
 
 export default OrderList;
+export { USER_ORDERS_QUERY };

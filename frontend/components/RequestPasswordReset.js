@@ -2,9 +2,10 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-import Error from "./ErrorMessage";
+import { withAlert } from "react-alert";
 import Form from "./styles/Form";
 import Success from "./SuccessMessage";
+import formatError from "../lib/formatError";
 
 const REQUEST_RESET_MUTATION = gql`
   mutation REQUEST_RESET_MUTATION($email: String!) {
@@ -31,19 +32,20 @@ class RequestPasswordReset extends React.Component {
             method="post"
             onSubmit={async e => {
               e.preventDefault();
-              await reset();
+              await reset().catch(err => {
+                this.props.alert.error(formatError(err));
+              });
               this.setState({ email: "" });
             }}
           >
             <fieldset disabled={loading} aria-busy={loading}>
               <h2>Reset Password</h2>
 
-              {error && <Error error={error} />}
               {!error && !loading && called && <Success message="Reset link sent to email" />}
 
               <label htmlFor="email">
                 Email
-                <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} />
+                <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} required />
               </label>
               <button type="submit">Reset</button>
             </fieldset>
@@ -54,4 +56,4 @@ class RequestPasswordReset extends React.Component {
   }
 }
 
-export default RequestPasswordReset;
+export default withAlert(RequestPasswordReset);
