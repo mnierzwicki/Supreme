@@ -8,6 +8,7 @@ import gql from "graphql-tag";
 import { withAlert } from "react-alert";
 
 import User, { CURRENT_USER_QUERY } from "./User";
+import { USER_ORDERS_QUERY } from "./OrderList";
 import calcTotalPrice from "../lib/calcTotalPrice";
 import { STRIPE_PUB_KEY } from "../config";
 
@@ -55,7 +56,7 @@ class Checkout extends React.Component {
       <User>
         {({ data: { me } }) =>
           me && (
-            <Mutation mutation={CREATE_ORDER_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+            <Mutation mutation={CREATE_ORDER_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }, { query: USER_ORDERS_QUERY }]}>
               {createOrder => (
                 <StripeCheckout
                   amount={calcTotalPrice(me.cart)}
