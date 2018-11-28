@@ -7,7 +7,7 @@ import User from "./User";
 import CartStyles from "./styles/CartStyles";
 import Supreme from "./styles/Supreme";
 import CloseButton from "./styles/CloseButton";
-import SickButton from "./styles/SickButton";
+import StyledButton from "./styles/StyledButton";
 import CartItem from "./CartItem";
 import calcTotalPrice from "../lib/calcTotalPrice";
 import formatMoney from "../lib/formatMoney";
@@ -55,7 +55,7 @@ const Cart = () => (
           <footer>
             <p>Total: {formatMoney(calcTotalPrice(me.cart))}</p>
             <Checkout>
-              <SickButton disabled={!me.cart.length}>Checkout</SickButton>
+              <StyledButton disabled={!me.cart.length}>Checkout</StyledButton>
             </Checkout>
           </footer>
         </CartStyles>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SickButton = styled.button`
+const StyledButton = styled.button`
   background: ${props => props.theme.orange};
   color: white;
   font-weight: 500;
@@ -11,9 +11,10 @@ const SickButton = styled.button`
   padding: 0.8rem 1.5rem;
   transition: all 0.5s;
   float: right;
+  width: 100%;
   &[disabled] {
     opacity: 0.5;
   }
 `;
 
-export default SickButton;
+export default StyledButton;
