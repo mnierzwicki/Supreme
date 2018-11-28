@@ -27,6 +27,11 @@ const Nav = () => (
               <Link href="/orders">
                 <a>Orders</a>
               </Link>
+              {me.permissions.includes("ADMIN") && (
+                <Link href="/permissions">
+                  <a>Permissions</a>
+                </Link>
+              )}
               <SignOut />
               <Mutation mutation={TOGGLE_CART_MUTATION}>
                 {toggleCart => (
