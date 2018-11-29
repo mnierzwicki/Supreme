@@ -12,10 +12,14 @@ const TOKEN_AGE_ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
 
 const Mutations = {
   async createItem(parent, args, ctx, info) {
-    // TODO: Check if they are logged in
-    if (!ctx.request.userId) {
+    const user = ctx.request.user;
+
+    if (!user) {
       throw new Error("Login to create items");
     }
+
+    // Verify user has permission to create items
+    hasPermission(user, ["ADMIN", "ITEMCREATE"]);
 
     const item = await ctx.db.mutation.createItem(
       {
@@ -33,7 +37,24 @@ const Mutations = {
     );
     return item;
   },
-  updateItem(parent, args, ctx, info) {
+  async updateItem(parent, args, ctx, info) {
+    const user = ctx.request.user;
+    if (!user) {
+      throw new Error("Login to update items");
+    }
+
+    // verify the item exists
+    const item = await ctx.db.query.item({ where: { id: args.id } }, "{ id user { id } }");
+    if (!item) {
+      throw new Error("Item doesn't exist");
+    }
+
+    const userOwnsItem = item.user.id === user.id;
+    const hasPermissions = user.permissions.some(permission => ["ADMIN", "ITEMUPDATE"].includes(permission));
+    if (!userOwnsItem && !hasPermissions) {
+      throw new Error("You can't edit this item");
+    }
+
     // take a copy of the updates
     const updates = { ...args };
 
@@ -63,9 +84,8 @@ const Mutations = {
 
     const userOwnsItem = item.user.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission => ["ADMIN", "ITEMDELETE"].includes(permission));
-
     if (!userOwnsItem && !hasPermissions) {
-      throw new Error("You don't own this item");
+      throw new Error("You can't delete this item");
     }
 
     // Delete all cart items which contain the item we're about to delete

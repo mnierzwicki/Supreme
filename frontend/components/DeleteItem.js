@@ -45,6 +45,7 @@ class DeleteItem extends React.Component {
                 deleteItem().catch(err => {
                   this.props.alert.error(formatError(err));
                 });
+                this.props.alert.success("Item deleted");
               }
             }}
           >

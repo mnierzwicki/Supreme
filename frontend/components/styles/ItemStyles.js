@@ -23,6 +23,9 @@ const Item = styled.div`
   button {
     cursor: pointer;
   }
+  button:disabled {
+    cursor: default;
+  }
   .buttonList {
     display: grid;
     width: 100%;
