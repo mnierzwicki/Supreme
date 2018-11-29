@@ -21,9 +21,11 @@ const Nav = () => (
 
           {me && (
             <>
-              <Link href="/sell">
-                <a>Sell</a>
-              </Link>
+              {me.permissions.some(permission => ["ADMIN", "ITEMCREATE"].includes(permission)) && (
+                <Link href="/sell">
+                  <a>Sell</a>
+                </Link>
+              )}
               <Link href="/orders">
                 <a>Orders</a>
               </Link>
