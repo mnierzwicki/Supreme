@@ -1,5 +1,5 @@
 {
-  "name": "supreme-frontend",
+  "name": "store-frontend",
   "version": "1.0.0",
   "description": "An example React, GraphQL, Next, and Apollo single-page app",
   "main": "index.js",

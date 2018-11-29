@@ -190,9 +190,9 @@ const Mutations = {
     // email the user the reset token
     await transport.sendMail(
       {
-        from: "supreme@reset.com",
+        from: "password-reset@react-demo-store.com",
         to: user.email,
-        subject: "Supreme Store Password Reset",
+        subject: "React Demo Store Password Reset",
         html: generateEmail(`Reset your account password: \n\n
           <a href='${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}'>Click here to reset</a>`)
       },

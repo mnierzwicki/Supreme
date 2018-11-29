@@ -28,7 +28,7 @@ const Pagination = props => (
         <PaginationStyles>
           <Head>
             <title>
-              Supreme | Page {page} of {pages}
+              Store | Page {page} of {pages}
             </title>
           </Head>
           <Link

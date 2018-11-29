@@ -62,7 +62,7 @@ const Header = () => (
     <div className="bar">
       <Logo>
         <Link href="/">
-          <a>Supreme</a>
+          <a>Store</a>
         </Link>
       </Logo>
       <Nav />

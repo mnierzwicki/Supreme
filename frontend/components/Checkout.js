@@ -60,7 +60,7 @@ class Checkout extends React.Component {
               {createOrder => (
                 <StripeCheckout
                   amount={calcTotalPrice(me.cart)}
-                  name="Supreme Store"
+                  name="Store"
                   description={`Order of ${totalItems(me.cart)} total items`}
                   stripeKey={STRIPE_PUB_KEY}
                   currency="USD"

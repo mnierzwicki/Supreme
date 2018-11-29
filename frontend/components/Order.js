@@ -45,7 +45,7 @@ class Order extends React.Component {
           return (
             <OrderStyles>
               <Head>
-                <title>Supreme - Order {order.id}</title>
+                <title>Order {order.id}</title>
               </Head>
               <p>
                 <span>Order ID</span>

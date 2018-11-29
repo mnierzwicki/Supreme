@@ -5,7 +5,7 @@ import { adopt } from "react-adopt";
 
 import User from "./User";
 import CartStyles from "./styles/CartStyles";
-import Supreme from "./styles/Supreme";
+import Store from "./styles/Store";
 import CloseButton from "./styles/CloseButton";
 import StyledButton from "./styles/StyledButton";
 import CartItem from "./CartItem";
@@ -42,7 +42,7 @@ const Cart = () => (
             <CloseButton onClick={toggleCart} title="close">
               &times;
             </CloseButton>
-            <Supreme>{me.name}'s Cart</Supreme>
+            <Store>{me.name}'s Cart</Store>
             <p>{me.cart.length} unique items in cart</p>
           </header>
 

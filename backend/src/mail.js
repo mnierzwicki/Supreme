@@ -19,7 +19,7 @@ const generateEmail = text => `
   line-height: 2;
   font-size: 20px;
   ">
-    <h2>Supreme Store</h2>
+    <h2>Store</h2>
     <p>${text}</p>
   </div>
 `;

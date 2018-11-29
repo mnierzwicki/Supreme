@@ -47,7 +47,7 @@ class SingleItem extends React.Component {
           return (
             <SingleItemStyles>
               <Head>
-                <title>Supreme | {data.item.title}</title>
+                <title>Store | {data.item.title}</title>
               </Head>
               <img src={data.item.largeImage} alt={data.item.title} />
               <div className="details">
