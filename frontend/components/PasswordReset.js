@@ -60,11 +60,11 @@ class PasswordReset extends React.Component {
 
               <label htmlFor="password">
                 New password
-                <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.saveToState} />
+                <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.saveToState} required />
               </label>
               <label htmlFor="confirmPassword">
                 Confirm New password
-                <input type="password" name="confirmPassword" placeholder="Confirm password" value={this.state.confirmPassword} onChange={this.saveToState} />
+                <input type="password" name="confirmPassword" placeholder="Confirm password" value={this.state.confirmPassword} onChange={this.saveToState} required />
               </label>
               <button type="submit">Reset</button>
             </fieldset>

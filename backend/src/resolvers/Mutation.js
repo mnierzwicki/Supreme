@@ -8,7 +8,7 @@ const { hasPermission } = require("../utils");
 const stripe = require("../stripe");
 
 const TOKEN_AGE_ONE_HOUR = 1000 * 60 * 60;
-const TOKEN_AGE_ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
+const TOKEN_AGE_ONE_YEAR = TOKEN_AGE_ONE_HOUR * 24 * 365;
 
 const Mutations = {
   async createItem(parent, args, ctx, info) {
@@ -99,6 +99,10 @@ const Mutations = {
     return ctx.db.mutation.deleteItem({ where: { id: args.id } }, info);
   },
   async signup(parent, args, ctx, info) {
+    if (!args.email || !args.name || !args.password) {
+      throw new Error("All fields are required for signup");
+    }
+
     // normalize email address
     args.email = args.email.toLowerCase();
 
@@ -130,6 +134,10 @@ const Mutations = {
     return user;
   },
   async signin(parent, args, ctx, info) {
+    if (!args.email || !args.password) {
+      throw new Error("All fields are required for signin");
+    }
+
     // Check if user with corresponding email exists
     const user = await ctx.db.query.user({ where: { email: args.email } });
     if (!user) {
@@ -160,6 +168,10 @@ const Mutations = {
     return { message: "Cookie clear" };
   },
   async requestReset(parent, args, ctx, info) {
+    if (!args.email) {
+      throw new Error("Email field is required");
+    }
+
     // check if this is a real user
     const user = await ctx.db.query.user({ where: { email: args.email } });
     if (!user) {
@@ -170,7 +182,7 @@ const Mutations = {
     const randomBytesPromise = await promisify(randomBytes)(20);
     const resetToken = randomBytesPromise.toString("hex");
     const resetTokenExpiry = Date.now() + TOKEN_AGE_ONE_HOUR;
-    const resp = await ctx.db.mutation.updateUser({
+    await ctx.db.mutation.updateUser({
       where: { email: args.email },
       data: { resetToken: resetToken, resetTokenExpiry: resetTokenExpiry }
     });
@@ -194,6 +206,10 @@ const Mutations = {
     return { message: "Reset email sent" };
   },
   async resetPassword(parent, args, ctx, info) {
+    if (!args.password || !args.confirmPassword) {
+      throw new Error("Both password fields are required");
+    }
+
     // check if passwords match
     if (args.password !== args.confirmPassword) {
       throw new Error("Provided passwords don't match");
