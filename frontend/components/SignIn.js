@@ -7,6 +7,7 @@ import Form from "./styles/Form";
 import formatError from "../lib/formatError";
 import Success from "./SuccessMessage";
 import { CURRENT_USER_QUERY } from "./User";
+import { USER_ORDERS_QUERY } from "./OrderList";
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -30,7 +31,7 @@ class SignIn extends React.Component {
 
   render() {
     return (
-      <Mutation mutation={SIGNIN_MUTATION} variables={this.state} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+      <Mutation mutation={SIGNIN_MUTATION} variables={this.state} refetchQueries={[{ query: CURRENT_USER_QUERY }, { query: USER_ORDERS_QUERY }]}>
         {(signin, { error, loading, called }) => (
           <Form
             method="post"
