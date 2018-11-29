@@ -17,7 +17,7 @@ const SEARCH_ITEMS_QUERY = gql`
 `;
 
 class AutoComplete extends React.Component {
-  DEBOUNCE_TIMEOUT = 350; // ms
+  DEBOUNCE_TIMEOUT = 250; // ms
 
   state = {
     items: [],
