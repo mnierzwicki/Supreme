@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import Form from "./styles/Form";
 import Error from "./ErrorMessage";
 import Success from "./SuccessMessage";
+import Spinner from "./Spinner";
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -54,7 +55,7 @@ class UpdateItem extends React.Component {
     return (
       <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
         {({ data, loading, error }) => {
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Spinner loading={loading} />;
           if (!data.item) return <p>No Item Found for ID: {this.props.id}</p>;
           return (
             <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>

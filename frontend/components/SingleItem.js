@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Head from "next/head";
 
 import Error from "./ErrorMessage";
+import Spinner from "./Spinner";
 
 const SingleItemStyles = styled.div`
   max-width: 1200px;
@@ -42,7 +43,7 @@ class SingleItem extends React.Component {
       <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
         {({ error, loading, data }) => {
           if (error) return <Error error={error} />;
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Spinner loading={loading} />;
           if (!data.item) return <p> No Item Found for {this.props.id}</p>;
           return (
             <SingleItemStyles>

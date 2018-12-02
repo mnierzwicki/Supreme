@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import Error from "./ErrorMessage";
 import Table from "./styles/Table";
+import Spinner from "./Spinner";
 
 const ALL_USERS_QUERY = gql`
   query {
@@ -33,7 +34,7 @@ const possiblePermissions = ["ADMIN", "USER", "ITEMCREATE", "ITEMUPDATE", "ITEMD
 const Permissions = props => (
   <Query query={ALL_USERS_QUERY} fetchPolicy="network-only">
     {({ data, error, loading }) => {
-      if (loading) return null;
+      if (loading) return <Spinner loading={loading} />;
       return (
         <div>
           {error && <h2>You have insufficient permissions to view this page!</h2>}

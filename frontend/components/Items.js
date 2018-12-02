@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Item from "./Item";
 import Pagination from "./Pagination";
 import { perPage } from "../config";
+import Spinner from "./Spinner";
 
 const ALL_ITEMS_QUERY = gql`
   query ALL_ITEMS_QUERY($skip: Int = 0, $first: Int = ${perPage}) {
@@ -52,7 +53,7 @@ class Items extends React.Component {
           }}
         >
           {payload => {
-            if (payload.loading) return <p>Loading...</p>;
+            if (payload.loading) return <Spinner loading={payload.loading} />;
             if (payload.error) return <p>Error: {payload.error.message}</p>;
             return (
               <ItemsList>

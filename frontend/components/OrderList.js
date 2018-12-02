@@ -8,6 +8,7 @@ import styled from "styled-components";
 import formatMoney from "../lib/formatMoney";
 import OrderItemStyles from "./styles/OrderItemStyles";
 import Error from "./ErrorMessage";
+import Spinner from "./Spinner";
 
 const USER_ORDERS_QUERY = gql`
   query USER_ORDERS_QUERY {
@@ -42,7 +43,7 @@ class OrderList extends React.Component {
         <Query query={USER_ORDERS_QUERY}>
           {({ data, error, loading }) => {
             if (error) return <Error error={error} />;
-            if (loading) return <p>Loading...</p>;
+            if (loading) return <Spinner loading={loading} />;
             const orders = data.orders;
             return (
               <div>

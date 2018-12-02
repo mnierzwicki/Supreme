@@ -4,9 +4,11 @@ import { Query } from "react-apollo";
 import { format } from "date-fns";
 import Head from "next/head";
 import gql from "graphql-tag";
+
 import formatMoney from "../lib/formatMoney";
 import OrderStyles from "./styles/OrderStyles";
 import Error from "./ErrorMessage";
+import Spinner from "./Spinner";
 
 const SINGLE_ORDER_QUERY = gql`
   query SINGLE_ORDER_QUERY($id: ID!) {
@@ -40,7 +42,7 @@ class Order extends React.Component {
       <Query query={SINGLE_ORDER_QUERY} variables={{ id: this.props.id }}>
         {({ data, error, loading }) => {
           if (error) return <Error error={error} />;
-          if (loading) return <p>Loading...</p>;
+          if (loading) return <Spinner loading={loading} />;
           const order = data.order;
           return (
             <OrderStyles>
