@@ -7,6 +7,9 @@
       "max": 1
     }
   },
+  "engines": {
+    "node": "^10.0.0"
+  },
   "env": {
     "FRONTEND_URL": "https://react-demo-store.now.sh",
     "PRISMA_ENDPOINT": "@supreme-store-prisma-endpoint",
