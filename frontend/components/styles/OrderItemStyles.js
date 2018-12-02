@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const OrderItemStyles = styled.li`
   box-shadow: ${props => props.theme.bs};
@@ -6,7 +6,7 @@ const OrderItemStyles = styled.li`
   padding: 2rem;
   border: 1px solid ${props => props.theme.offWhite};
   h2 {
-    border-bottom: 2px solid red;
+    border-bottom: 2px solid ${props => props.theme.orange};
     margin-top: 0;
     margin-bottom: 2rem;
     padding-bottom: 2rem;

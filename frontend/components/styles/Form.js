@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const loading = keyframes`
   from {
@@ -33,13 +33,13 @@ const Form = styled.form`
     border: 1px solid black;
     &:focus {
       outline: 0;
-      border-color: ${props => props.theme.red};
+      border-color: ${props => props.theme.orange};
     }
   }
   button,
-  input[type='submit'] {
+  input[type="submit"] {
     width: auto;
-    background: red;
+    background: ${props => props.theme.orange};
     color: white;
     border: 0;
     font-size: 2rem;
@@ -55,11 +55,11 @@ const Form = styled.form`
     }
     &::before {
       height: 10px;
-      content: '';
+      content: "";
       display: block;
-      background-image: linear-gradient(to right, #ff3019 0%, #e2b04a 50%, #ff3019 100%);
+      background-image: linear-gradient(to right, #e87722 0%, #e87722 50%, #e87722 100%);
     }
-    &[aria-busy='true']::before {
+    &[aria-busy="true"]::before {
       background-size: 50% auto;
       animation: ${loading} 0.5s linear infinite;
     }
