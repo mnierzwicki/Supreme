@@ -3,6 +3,7 @@ import styled, { ThemeProvider, injectGlobal } from "styled-components";
 
 import Header from "../components/Header";
 import Meta from "../components/Meta";
+import Footer from "../components/Footer";
 
 const theme = {
   maroon: "#8B1F41",
@@ -20,6 +21,18 @@ const theme = {
 const StyledPage = styled.div`
   background: white;
   color: ${props => props.theme.black};
+
+  /*
+  Extend our page if we don't have enough content
+  to fill it, so that our footer doesn't float up
+  */
+  position: relative;
+  min-height: 100vh;
+`;
+
+const ContentWrapper = styled.div`
+  /* Leave room for footer at the bottom of the page */
+  padding-bottom: 2.5rem;
 `;
 
 const Inner = styled.div`
@@ -61,8 +74,11 @@ class Page extends React.Component {
       <ThemeProvider theme={theme}>
         <StyledPage>
           <Meta />
-          <Header />
-          <Inner>{this.props.children}</Inner>
+          <ContentWrapper>
+            <Header />
+            <Inner>{this.props.children}</Inner>
+          </ContentWrapper>
+          <Footer />
         </StyledPage>
       </ThemeProvider>
     );
