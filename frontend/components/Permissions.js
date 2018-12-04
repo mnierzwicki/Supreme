@@ -37,10 +37,16 @@ const Permissions = props => (
       if (loading) return <Spinner loading={loading} />;
       return (
         <div>
-          {error && <h2>You have insufficient permissions to view this page!</h2>}
+          {error && (
+            <center>
+              <h2>You have insufficient permissions to view this page!</h2>
+            </center>
+          )}
           {!error && !loading && data && (
             <div>
-              <h2>Manage Permissions</h2>
+              <center>
+                <h2>Manage Permissions</h2>
+              </center>
               <Table>
                 <thead>
                   <tr>

@@ -34,7 +34,7 @@ const ItemsList = styled.div`
   grid-gap: 60px;
   max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
-  @media (max-width: 800px) {
+  @media (max-width: 1000px) {
     grid-template-columns: 1fr;
     grid-row-gap: 100px;
     padding: 2rem;

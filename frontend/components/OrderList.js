@@ -30,6 +30,11 @@ const OrderUl = styled.ul`
   display: grid;
   grid-gap: 4rem;
   grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr;
+    grid-row-gap: 100px;
+    padding: 2rem;
+  }
 `;
 
 const OrderHeader = styled.h2`
