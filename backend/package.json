@@ -22,11 +22,12 @@
     "npm-run-all": "^4.1.3",
     "prisma": "1.17.1",
     "prisma-binding": "2.1.6",
-    "stripe": "^6.12.1"
+    "stripe": "^6.18.1"
   },
   "license": "MIT",
   "repository": {
-    "url": "wesbos.com"
+    "type": "git",
+    "url": "https://github.com/mnierzwicki/Supreme/tree/master/backend"
   },
   "babel": {
     "presets": [
