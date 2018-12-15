@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import SignUp from "../components/SignUp";
 import SignIn from "../components/SignIn";
-import RequestPasswordReset from "../components/RequestPasswordReset";
+import ForgotPassword from "../components/ForgotPassword";
 
 const Columns = styled.div`
   display: grid;
@@ -12,9 +12,9 @@ const Columns = styled.div`
 
 const SignInPage = props => (
   <Columns>
-    <SignUp />
     <SignIn />
-    <RequestPasswordReset />
+    <SignUp />
+    <ForgotPassword />
   </Columns>
 );
 

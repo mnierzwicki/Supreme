@@ -8,6 +8,9 @@ import formatError from "../lib/formatError";
 import Success from "./SuccessMessage";
 import { CURRENT_USER_QUERY } from "./User";
 import { USER_ORDERS_QUERY } from "./OrderList";
+import CardStyles from "./styles/CardStyles";
+import CardInput from "./styles/CardInput";
+import CardButton from "./styles/CardButton";
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
@@ -19,14 +22,15 @@ const SIGNIN_MUTATION = gql`
   }
 `;
 
-class SignIn extends React.Component {
+class Login extends React.Component {
   state = {
     password: "",
     email: ""
   };
 
   saveToState = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    this.setState({ [name.toLowerCase()]: value });
   };
 
   render() {
@@ -40,24 +44,21 @@ class SignIn extends React.Component {
               await signin().catch(err => {
                 this.props.alert.error(formatError(err));
               });
-              this.setState({ name: "", email: "", password: "" });
+              this.setState({ email: "", password: "" });
             }}
           >
-            <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Login</h2>
+            <CardStyles>
+              <div className="card">
+                <h1 className="title">Sign In</h1>
+                <fieldset disabled={loading} aria-busy={loading}>
+                  {!error && !loading && called && <Success message={"Logged in!"} />}
 
-              {!error && !loading && called && <Success message={"Logged in!"} />}
-
-              <label htmlFor="email">
-                Email
-                <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} required />
-              </label>
-              <label htmlFor="password">
-                Password
-                <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.saveToState} required />
-              </label>
-              <button type="submit">Login</button>
-            </fieldset>
+                  <CardInput type="text" name="Email" id="sign-in-email" value={this.state.email} onChange={this.saveToState} />
+                  <CardInput type="password" name="Password" id="sign-in-password" value={this.state.password} onChange={this.saveToState} />
+                  <CardButton text="Login" />
+                </fieldset>
+              </div>
+            </CardStyles>
           </Form>
         )}
       </Mutation>
@@ -65,4 +66,4 @@ class SignIn extends React.Component {
   }
 }
 
-export default withAlert(SignIn);
+export default withAlert(Login);

@@ -7,6 +7,9 @@ import Error from "./ErrorMessage";
 import Form from "./styles/Form";
 import Success from "./SuccessMessage";
 import { CURRENT_USER_QUERY } from "./User";
+import CardStyles from "./styles/CardStyles";
+import CardInput from "./styles/CardInput";
+import CardButton from "./styles/CardButton";
 
 const PASSWORD_RESET_MUTATION = gql`
   mutation PASSWORD_RESET_MUTATION($resetToken: String!, $password: String!, $confirmPassword: String!) {
@@ -29,7 +32,8 @@ class PasswordReset extends React.Component {
   };
 
   saveToState = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
   };
 
   render() {
@@ -52,22 +56,26 @@ class PasswordReset extends React.Component {
               this.setState({ password: "", confirmPassword: "" });
             }}
           >
-            <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Reset password</h2>
+            <CardStyles>
+              <div className="card">
+                <h1 className="title">Reset Password</h1>
+                <fieldset disabled={loading} aria-busy={loading}>
+                  {error && <Error error={error} />}
+                  {!error && !loading && called && <Success message={"Password changed!"} />}
 
-              {error && <Error error={error} />}
-              {!error && !loading && called && <Success message={"Successfully changed password"} />}
-
-              <label htmlFor="password">
-                New password
-                <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.saveToState} required />
-              </label>
-              <label htmlFor="confirmPassword">
-                Confirm New password
-                <input type="password" name="confirmPassword" placeholder="Confirm password" value={this.state.confirmPassword} onChange={this.saveToState} required />
-              </label>
-              <button type="submit">Reset</button>
-            </fieldset>
+                  <CardInput type="password" name="password" placeholder="Password" id="password-reset-password" value={this.state.password} onChange={this.saveToState} />
+                  <CardInput
+                    type="password"
+                    name="confirmPassword"
+                    id="password-reset-confirm-password"
+                    placeholder="Confirm Password"
+                    value={this.state.confirmPassword}
+                    onChange={this.saveToState}
+                  />
+                  <CardButton text="Reset" />
+                </fieldset>
+              </div>
+            </CardStyles>
           </Form>
         )}
       </Mutation>

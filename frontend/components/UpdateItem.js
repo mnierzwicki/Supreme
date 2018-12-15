@@ -6,6 +6,9 @@ import Form from "./styles/Form";
 import Error from "./ErrorMessage";
 import Success from "./SuccessMessage";
 import Spinner from "./Spinner";
+import CardStyles from "./styles/CardStyles";
+import CardInput from "./styles/CardInput";
+import CardButton from "./styles/CardButton";
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -35,7 +38,7 @@ class UpdateItem extends React.Component {
   handleChange = event => {
     const { name, type, value } = event.target;
     const val = type === "number" ? parseFloat(value) : value;
-    this.setState({ [name]: val });
+    this.setState({ [name.toLowerCase()]: val });
   };
 
   updateItem = async (event, updateItemMutation) => {
@@ -64,32 +67,18 @@ class UpdateItem extends React.Component {
                   {error && <Error error={error} />}
                   {!error && !loading && called && <Success message={"Item updated"} />}
 
-                  <fieldset disabled={loading} aria-busy={loading}>
-                    <label htmlFor="title">
-                      Title
-                      <input type="text" id="title" name="title" placeholder="Title" defaultValue={data.item.title} onChange={this.handleChange} required />
-                    </label>
+                  <CardStyles>
+                    <div className="card">
+                      <h1 className="title">Update Item</h1>
+                      <fieldset disabled={loading} aria-busy={loading}>
+                        <CardInput type="text" name="Title" defaultValue={data.item.title} onChange={this.handleChange} />
+                        <CardInput type="number" name="Price" placeholder="Price (¢)" defaultValue={data.item.price.toString()} onChange={this.handleChange} />
+                        <CardInput type="textarea" name="Description" defaultValue={data.item.description} onChange={this.handleChange} />
 
-                    <label htmlFor="price">
-                      Price
-                      <input type="number" id="price" name="price" placeholder="Price" defaultValue={data.item.price} onChange={this.handleChange} required />
-                    </label>
-
-                    <label htmlFor="description">
-                      Description
-                      <textarea
-                        type="text"
-                        id="description"
-                        name="description"
-                        placeholder="Enter a description"
-                        defaultValue={data.item.description}
-                        onChange={this.handleChange}
-                        required
-                      />
-                    </label>
-
-                    <button type="submit">{loading ? "Updating..." : "Update"}</button>
-                  </fieldset>
+                        <CardButton text={loading ? "Updating..." : "Update"} />
+                      </fieldset>
+                    </div>
+                  </CardStyles>
                 </Form>
               )}
             </Mutation>

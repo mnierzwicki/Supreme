@@ -9,6 +9,10 @@ import { PAGINATION_QUERY } from "./Pagination";
 import { ALL_ITEMS_QUERY } from "./Items";
 import formatError from "../lib/formatError";
 import User from "./User";
+import CardStyles from "./styles/CardStyles";
+import CardInput from "./styles/CardInput";
+import CardButton from "./styles/CardButton";
+import FileInputButton from "./styles/FileInputButton";
 
 const CREATE_ITEM_MUTATION = gql`
   mutation CREATE_ITEM_MUTATION($title: String!, $description: String!, $price: Int!, $image: String, $largeImage: String) {
@@ -24,13 +28,17 @@ class CreateItem extends React.Component {
     description: "",
     image: "",
     largeImage: "",
-    price: 0
+    price: ""
   };
 
   handleChange = event => {
     const { name, type, value } = event.target;
-    const val = type === "number" ? parseFloat(value) : value;
-    this.setState({ [name]: val });
+    if (value) {
+      const val = type === "number" ? parseFloat(value) : value;
+      this.setState({ [name.toLowerCase()]: val });
+    } else {
+      this.setState({ [name.toLowerCase()]: "" });
+    }
   };
 
   uploadFile = async event => {
@@ -79,37 +87,20 @@ class CreateItem extends React.Component {
                     });
                   }}
                 >
-                  <fieldset disabled={loading} aria-busy={loading}>
-                    <label htmlFor="title">
-                      Title
-                      <input type="text" id="title" name="title" placeholder="Title" value={this.state.title} onChange={this.handleChange} required />
-                    </label>
+                  <CardStyles>
+                    <div className="card">
+                      <h1 className="title">Sell Item</h1>
+                      <fieldset disabled={loading} aria-busy={loading}>
+                        <CardInput type="text" name="Title" value={this.state.title} onChange={this.handleChange} />
+                        <CardInput type="number" name="Price" value={this.state.price.toString()} placeholder="Price (¢)" onChange={this.handleChange} />
+                        <CardInput type="textarea" name="Description" value={this.state.description} onChange={this.handleChange} />
 
-                    <label htmlFor="price">
-                      Price
-                      <input type="number" id="price" name="price" placeholder="Price" value={this.state.price} onChange={this.handleChange} required />
-                    </label>
+                        <FileInputButton callback={this.uploadFile} />
 
-                    <label htmlFor="description">
-                      Description
-                      <textarea
-                        type="text"
-                        id="description"
-                        name="description"
-                        placeholder="Enter a description"
-                        value={this.state.description}
-                        onChange={this.handleChange}
-                        required
-                      />
-                    </label>
-
-                    <label htmlFor="file">
-                      Image
-                      <input type="file" id="file" name="file" placeholder="Upload an image" onChange={this.uploadFile} required />
-                    </label>
-
-                    <button type="submit">Submit</button>
-                  </fieldset>
+                        <CardButton text="Sell" />
+                      </fieldset>
+                    </div>
+                  </CardStyles>
                 </Form>
               )}
             </Mutation>

@@ -2,6 +2,9 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
+import CardStyles from "./styles/CardStyles";
+import CardInput from "./styles/CardInput";
+import CardButton from "./styles/CardButton";
 import { withAlert } from "react-alert";
 import Form from "./styles/Form";
 import Success from "./SuccessMessage";
@@ -15,13 +18,14 @@ const REQUEST_RESET_MUTATION = gql`
   }
 `;
 
-class RequestPasswordReset extends React.Component {
+class ForgotPassword extends React.Component {
   state = {
     email: ""
   };
 
   saveToState = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    this.setState({ [name.toLowerCase()]: value });
   };
 
   render() {
@@ -38,17 +42,17 @@ class RequestPasswordReset extends React.Component {
               this.setState({ email: "" });
             }}
           >
-            <fieldset disabled={loading} aria-busy={loading}>
-              <h2>Reset Password</h2>
+            <CardStyles>
+              <div className="card">
+                <h1 className="title">Locked Out?</h1>
+                <fieldset disabled={loading} aria-busy={loading}>
+                  {!error && !loading && called && <Success message="Reset link sent to email" />}
 
-              {!error && !loading && called && <Success message="Reset link sent to email" />}
-
-              <label htmlFor="email">
-                Email
-                <input type="email" name="email" placeholder="email" value={this.state.email} onChange={this.saveToState} required />
-              </label>
-              <button type="submit">Reset</button>
-            </fieldset>
+                  <CardInput type="text" name="Email" id="forgot-password-email" value={this.state.email} onChange={this.saveToState} />
+                  <CardButton text="Reset" />
+                </fieldset>
+              </div>
+            </CardStyles>
           </Form>
         )}
       </Mutation>
@@ -56,4 +60,4 @@ class RequestPasswordReset extends React.Component {
   }
 }
 
-export default withAlert(RequestPasswordReset);
+export default withAlert(ForgotPassword);
